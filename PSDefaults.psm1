@@ -178,18 +178,17 @@ function Set-DefaultsValue {
     )
 
     process {
+        $defaultsArgs = $Domain
         if ($GlobalDomain) {
-            $Domain = '-globalDomain'
+            $defaultsArgs = '-globalDomain'
         } elseif ($ApplicationName) {
-            $Domain = '-app', $ApplicationName
+            $defaultsArgs = '-app', $ApplicationName
         }
 
         # Check previous value
         $prevValue = try {
             Get-DefaultsValue -Domain $Domain -Key $Key
-        } catch [System.Management.Automation.PropertyNotFoundException] {
-            $null
-        }
+        } catch {}
         if ($null -eq $prevValue) {
             Write-Verbose "Adding key $Key to domain $Domain, did not exist"
         } else {
@@ -206,7 +205,7 @@ function Set-DefaultsValue {
         $shouldProcessDescription = "Setting defaults value of $Key in domain $Domain to value $Value"
         $shouldProcessWarning = "Do you want to set defaults value of $Key in domain $Domain to value $Value?"
         if ($PSCmdlet.ShouldProcess($shouldProcessDescription, $shouldProcessWarning, $shouldProcessCaption)) {
-            defaults write $Domain $Key @valueArgs
+            defaults write $defaultsArgs $Key @valueArgs
         }
     }
 }
