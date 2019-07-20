@@ -32,11 +32,17 @@ Describe PSDefaults {
             $value | Should -BeOfType [double]
             $value | Should -Be 1.5
         }
-        It 'should return the defaults value for a domain and key of type bool' {
+        It 'should return the defaults value for a domain and key of type true' {
             defaults write test.domain TestKey2 -bool true
             $value = Get-DefaultsValue -Domain test.domain -Key TestKey2
             $value | Should -BeOfType [bool]
             $value | Should -Be $true
+        }
+        It 'should return the defaults value for a domain and key of type false' {
+            defaults write test.domain TestKey2 -bool false
+            $value = Get-DefaultsValue -Domain test.domain -Key TestKey2
+            $value | Should -BeOfType [bool]
+            $value | Should -Be $false
         }
         It 'should return the defaults value for a domain and key of type string' {
             defaults write test.domain TestKey2 -string 'abc'
