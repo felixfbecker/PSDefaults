@@ -12,6 +12,10 @@ Describe PSDefaults {
             $domains = Get-DefaultsDomain
             $domains | Should -Contain 'test.domain'
         }
+        It 'should return all domains on the current host' {
+            $domains = Get-DefaultsDomain -CurrentHost
+            $domains | Should -Not -BeNullOrEmpty
+        }
     }
 
     Describe Get-DefaultsValue {
