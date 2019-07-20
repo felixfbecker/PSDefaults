@@ -40,7 +40,7 @@ Get the current setting for showing the CC field in Apple Mail:
 Get-DefaultsValue -Domain com.apple.mail -Key ShowCcHeader
 ```
 
-Enable the current setting for showing the CC field in Apple Mail:
+Enable the setting for showing the CC field in Apple Mail:
 
 ```powershell
 Set-DefaultsValue -Domain com.apple.mail -Key ShowCcHeader -Value 1
