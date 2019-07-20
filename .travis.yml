@@ -1,7 +1,5 @@
 
-language: csharp
-dotnet: '2.0.0'
-mono: none
+language: minimal
 
 os: osx
 osx_image: xcode9.1
