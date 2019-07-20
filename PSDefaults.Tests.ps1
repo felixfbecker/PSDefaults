@@ -21,6 +21,15 @@ Describe PSDefaults {
             $values.TestKey1 | Should -BeOfType [bigint]
             $values.TestKey1 | Should -Be 123
         }
+        It 'should return all defaults values for the global domain' {
+            $values = Get-DefaultsValue -GlobalDomain
+            $values | Should -Not -BeNullOrEmpty
+            $values.ContainsKey('AppleLocale') | Should -BeTrue
+        }
+        It 'should return all defaults values for an application' {
+            $values = Get-DefaultsValue -ApplicationName Calendar
+            $values | Should -Not -BeNullOrEmpty
+        }
         It 'should return the defaults value for a domain and key of type int' {
             $value = Get-DefaultsValue -Domain test.domain -Key TestKey1
             $value | Should -BeOfType [bigint]
