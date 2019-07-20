@@ -161,6 +161,15 @@ Describe PSDefaults {
                 ')'
             )
         }
+        It 'should warn when changing the type' {
+            Set-DefaultsValue -Domain test.domain -Key TestKey -Value $true
+            defaults read-type test.domain TestKey | Should -Be 'Type is boolean'
+            Set-DefaultsValue -Domain test.domain -Key TestKey -Value 123 -WarningVariable warnings
+            defaults read-type test.domain TestKey | Should -Be 'Type is integer'
+            defaults read test.domain TestKey | Should -Be 123
+            $warnings | Should -Not -BeNullOrEmpty
+            $warnings | Should -Match 'changing type'
+        }
     }
 
     Describe Remove-DefaultsValue {
