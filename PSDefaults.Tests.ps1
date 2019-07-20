@@ -16,6 +16,10 @@ Describe PSDefaults {
             $domains = Get-DefaultsDomain -CurrentHost
             $domains | Should -Not -BeNullOrEmpty
         }
+        It 'should support supplying a custom host' {
+            $domains = Get-DefaultsDomain -HostName localhost
+            $domains | Should -Not -BeNullOrEmpty
+        }
     }
 
     Describe Get-DefaultsValue {
