@@ -132,4 +132,20 @@ Describe PSDefaults {
             )
         }
     }
+
+    Describe Remove-DefaultsValue {
+        It 'should remove a defaults value in a domain' {
+            Remove-DefaultsValue -Domain test.domain -Key TestKey1
+            defaults read test.domain TestKey1
+            $LASTEXITCODE | Should -Be 1
+        }
+    }
+
+    Describe Remove-DefaultsDomain {
+        It 'should remove a domain' {
+            Remove-DefaultsDomain -Domain test.domain
+            defaults read test.domain
+            $LASTEXITCODE | Should -Be 1
+        }
+    }
 }
