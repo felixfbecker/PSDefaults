@@ -14,7 +14,7 @@ before_install:
   - brew cask install powershell
 
 install:
-  - pwsh -c '& { $ProgressPreference = "SilentlyContinue"; Install-Module -Force -Scope CurrentUser Pester, PSScriptAnalyzer, PSCodeCovIo; }''
+  - pwsh -c '& { $ProgressPreference = "SilentlyContinue"; Install-Module -Force -Scope CurrentUser Pester, PSScriptAnalyzer, PSCodeCovIo; }'
 
 script:
   - pwsh -c 'Invoke-ScriptAnalyzer -Path .'
