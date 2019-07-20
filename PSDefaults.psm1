@@ -210,7 +210,7 @@ function Set-DefaultsValue {
             }
         }
 
-        $valueArgs = ConvertTo-DefaultsValueArguments -Value $Value
+        $valueArgs = ConvertTo-DefaultsValueArguments -Value $Value -Add:$Add
         Write-Debug "Value arguments $valueArgs"
 
         $shouldProcessCaption = "Setting defaults value"

@@ -131,6 +131,30 @@ Describe PSDefaults {
                 '}'
             )
         }
+        It 'should add a key to a dict a defaults value for a domain, key and value with -Add' {
+            defaults write test.domain TestDict -dict foo bar
+            Set-DefaultsValue -Domain test.domain -Key TestDict -Value @{ baz = 'qux' } -Add
+            defaults read-type test.domain TestDict | Should -Be 'Type is dictionary'
+            defaults read test.domain TestDict | Should -Be @(
+                '{',
+                '    baz = qux;',
+                '    foo = bar;',
+                '}'
+            )
+        }
+        It 'should add a key to an array defaults value for a domain, key and value with -Add' {
+            defaults write test.domain TestArray -array 1 2
+            Set-DefaultsValue -Domain test.domain -Key TestArray -Value @(3, 4) -Add
+            defaults read-type test.domain TestArray | Should -Be 'Type is array'
+            defaults read test.domain TestArray | Should -Be @(
+                '(',
+                '    1,',
+                '    2,',
+                '    3,',
+                '    4',
+                ')'
+            )
+        }
     }
 
     Describe Remove-DefaultsValue {
