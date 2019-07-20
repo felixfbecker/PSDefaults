@@ -42,19 +42,20 @@ function Get-DefaultsValue {
         [switch] $GlobalDomain,
 
         [Parameter(Mandatory, ParameterSetName = 'ApplicationName')]
-        [switch] $ApplicationName,
+        [string] $ApplicationName,
 
         [Parameter(Position = 1)]
         [string] $Key
     )
 
     process {
+        $defaultArgs = $Domain
         if ($GlobalDomain) {
-            $Domain = '-globalDomain'
+            $defaultArgs = '-globalDomain'
         } elseif ($ApplicationName) {
-            $Domain = '-app', $ApplicationName
+            $defaultArgs = '-app', $ApplicationName
         }
-        $plist = [xml](defaults export $Domain -)
+        $plist = [xml](defaults export $defaultArgs -)
         [hashtable]$dict = $plist.DocumentElement.ChildNodes | ConvertFrom-DefaultsXml
         if ($Key) {
             $dict.$Key
