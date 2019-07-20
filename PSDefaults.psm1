@@ -1,5 +1,21 @@
 Import-Module ./Completers.ps1
 
+function Get-DefaultsDomainArguments {
+    param(
+        [string] $Domain,
+        [switch] $GlobalDomain,
+        [string] $ApplicationName
+    )
+    if ($Domain) {
+        $Domain
+    } elseif ($GlobalDomain) {
+        '-globalDomain'
+    } elseif ($ApplicationName) {
+        '-app'
+        $ApplicationName
+    }
+}
+
 function Get-DefaultsDomain {
     <#
     .SYNOPSIS
@@ -49,12 +65,7 @@ function Get-DefaultsValue {
     )
 
     process {
-        $defaultArgs = $Domain
-        if ($GlobalDomain) {
-            $defaultArgs = '-globalDomain'
-        } elseif ($ApplicationName) {
-            $defaultArgs = '-app', $ApplicationName
-        }
+        $defaultArgs = Get-DefaultsDomainArguments -Domain $Domain -GlobalDomain:$GlobalDomain -ApplicationName $ApplicationName
         $plist = [xml](defaults export $defaultArgs -)
         [hashtable]$dict = $plist.DocumentElement.ChildNodes | ConvertFrom-DefaultsXml
         if ($Key) {
@@ -166,7 +177,7 @@ function Set-DefaultsValue {
         [switch] $GlobalDomain,
 
         [Parameter(Mandatory, ParameterSetName = 'ApplicationName')]
-        [switch] $ApplicationName,
+        [string] $ApplicationName,
 
         [Parameter(Mandatory, Position = 1)]
         [string] $Key,
@@ -178,12 +189,7 @@ function Set-DefaultsValue {
     )
 
     process {
-        $defaultsArgs = $Domain
-        if ($GlobalDomain) {
-            $defaultsArgs = '-globalDomain'
-        } elseif ($ApplicationName) {
-            $defaultsArgs = '-app', $ApplicationName
-        }
+        $defaultsArgs = Get-DefaultsDomainArguments -Domain $Domain -GlobalDomain:$GlobalDomain -ApplicationName $ApplicationName
 
         # Check previous value
         $prevValue = try {
