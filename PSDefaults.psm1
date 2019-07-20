@@ -24,9 +24,6 @@ function Get-DefaultsDomain {
             $params += '-currentHost'
         }
         (defaults @params domains) -split ', '
-        if ($LASTEXITCODE -ne 0) {
-            throw "Error getting defaults domains"
-        }
     }
 }
 Export-ModuleMember -Function Get-DefaultsDomain
@@ -58,9 +55,6 @@ function Get-DefaultsValue {
             $Domain = '-app', $ApplicationName
         }
         $plist = [xml](defaults export $Domain -)
-        if ($LASTEXITCODE -ne 0) {
-            throw "Error getting defaults value in domain $Domain"
-        }
         [hashtable]$dict = $plist.DocumentElement.ChildNodes | ConvertFrom-DefaultsXml
         if ($Key) {
             $dict.$Key
@@ -126,9 +120,6 @@ function Remove-DefaultsDomain {
 
         if ($PSCmdlet.ShouldProcess($shouldProcessDescription, $shouldProcessWarning, $shouldProcessCaption)) {
             defaults delete $Domain
-            if ($LASTEXITCODE -ne 0) {
-                throw "Error removing defaults domain $Domain"
-            }
         }
     }
 }
@@ -155,9 +146,6 @@ function Remove-DefaultsValue {
 
         if ($PSCmdlet.ShouldProcess($shouldProcessDescription, $shouldProcessWarning, $shouldProcessCaption)) {
             defaults delete $Domain $Key
-            if ($LASTEXITCODE -ne 0) {
-                throw "Error removing defaults key $Key in domain $Domain"
-            }
         }
     }
 }
@@ -218,9 +206,6 @@ function Set-DefaultsValue {
         $shouldProcessWarning = "Do you want to set defaults value of $Key in domain $Domain to value $Value?"
         if ($PSCmdlet.ShouldProcess($shouldProcessDescription, $shouldProcessWarning, $shouldProcessCaption)) {
             defaults write $Domain $Key @valueArgs
-            if ($LASTEXITCODE -ne 0) {
-                throw "Error setting defaults value $Key in domain $Domain"
-            }
         }
     }
 }
