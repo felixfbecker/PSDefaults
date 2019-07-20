@@ -194,7 +194,7 @@ function Set-DefaultsValue {
         # Check previous value
         $prevValue = try {
             Get-DefaultsValue -Domain $Domain -Key $Key
-        } catch {}
+        } catch { }
         if ($null -eq $prevValue) {
             Write-Verbose "Adding key $Key to domain $Domain, did not exist"
         } else {
